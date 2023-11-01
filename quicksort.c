@@ -19,11 +19,8 @@ int swap(int array[], int a, int b) {
     return 0;
 }
 
-int * quicksort(int array[], int size_of_array) {
-    int left = 0;
-    int pivot = 0;
-    int right = size_of_array - 1;
-
+int * quicksort(int array[], int size_of_array, int sorted_array[]) {
+    /* If the array only has one element just print it */
     if (size_of_array == 1) {
         printf("This is just an element!\n");
         print_array(array, 1);
@@ -31,6 +28,7 @@ int * quicksort(int array[], int size_of_array) {
         return 0;
     }
 
+    /* If the array has two elements check if it is in order and print it */
     else if (size_of_array == 2) {
         if (array[0] > array[1]) {
             swap(array, 0, 1);
@@ -40,11 +38,14 @@ int * quicksort(int array[], int size_of_array) {
 
         return 0;
     }
+
+    /* Initializing the indicators */
+    int left = 0;
+    int pivot = 0;
+    int right = size_of_array - 1;
+
+    /* Put the pivot in the correct position */
     while (left != right) {
-        printf("This is the array[left]: %d\n", array[left]);
-        printf("This is the array[right]: %d\n", array[right]);
-        printf("This is the array[pivot]: %d\n", array[pivot]);
-        printf("-------------------------\n");
         if (pivot == left) {
             if (array[pivot] < array[right]) {
                 --right;
@@ -69,10 +70,9 @@ int * quicksort(int array[], int size_of_array) {
         }
     }
 
+    /* Create sub arrays for the recursion step */
     int sub_left_array_size = pivot;
     int sub_right_array_size = size_of_array - pivot - 1;
-    printf("This is the size of the sub array left: %d\n", sub_left_array_size);
-    printf("This is the size of the sub array right: %d\n", sub_right_array_size);
 
     int sub_array_left[sub_left_array_size];
     int sub_array_right[sub_right_array_size];
@@ -94,11 +94,11 @@ int * quicksort(int array[], int size_of_array) {
     print_array(sub_array_right, sub_right_array_size);
 
     if (sub_left_array_size > 0) {
-        quicksort(sub_array_left, sub_left_array_size);
+        quicksort(sub_array_left, sub_left_array_size, sorted_array);
     }
 
     if (sub_right_array_size > 0) {
-        quicksort(sub_array_right, sub_right_array_size);
+        quicksort(sub_array_right, sub_right_array_size, sorted_array);
     }
 }
 
@@ -106,7 +106,10 @@ int * quicksort(int array[], int size_of_array) {
 int main() {
     int array[] = {24, 9, 29, 14, 19, 27};
     int size_of_array = sizeof(array)/sizeof(array[0]);
-    quicksort(array, size_of_array);
+
+    int sorted_array[size_of_array];
+
+    quicksort(array, size_of_array, sorted_array);
     return 0;
 }
 
